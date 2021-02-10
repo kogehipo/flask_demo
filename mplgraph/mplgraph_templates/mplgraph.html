@@ -22,33 +22,23 @@
 </head>
 
 <body>
-    <h1>Plot Graph</h1>
+    <h1>matplotlibによるグラフ描画</h1>
     <div>
-        <p>select a function</p>
+        <p>グラフを選んでください。穂高岳は表示に少し時間がかかります。</p>
         <select id=selector onchange="drawGraph(this)">
             <option value="sin">sin</option>
             <option value="cos" selected>cos</option>
             <option value="tan">tan</option>
-            <option value="3dhotaka">3D(Hotaka)</option>
-            <option value="3dhotaka2">3D(Hotaka2)</option>
-            <option value="3d">3D</option>
             <option value="3dsin">3D(sin)</option>
+            <option value="3d">3D</option>
+            <option value="3dhotaka">3D(穂高岳)</option>
+            <option value="3dhotaka2">3D(穂高岳2)</option>
         </select>
     </div>
     <br/>
     
     <img id=plotimg></img>
     <p/>
-
-    
-    <!-- <a href="https://esp00.herokuapp.com/download"> -->
-    <a href="https://learn.rdc.oit.ac.jp/flask_demo/mplgraph/download">
-    <button>データファイル(CSV)をダウンロードします</button></a>
-    <p/>
-
-    <div class="sensor_info_block">
-        {{ sensor_readings }}
-    </div>
 
 </body>
 

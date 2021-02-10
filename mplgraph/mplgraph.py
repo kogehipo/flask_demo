@@ -23,75 +23,9 @@ import os
 
 app = Blueprint('mplgraph', __name__, url_prefix='/mplgraph', template_folder='mplgraph_templates')
 
-# 受信データを表示するための文字列の初期値
-sensor = 'No data received from the sensor.'
-
-# /download にアクセスしたときの処理
-@app.route('/download')
-def download():
-    print('DEBUG: Download function was called.')
-
-    # 蓄積されたデータが存在したと仮定して、仮のデータを作る。
-    data = [
-        ['TIME','Latitude','Longitude','Temperature'],
-        ['2019-07-01 15:00:00','9997','1740','25.0'],
-        ['2019-07-02 15:00:00','9997','1749','26.0'],
-        ['2019-07-03 15:00:00','9997','1757','27.0'],
-        ['2019-07-04 15:00:00','9997','1769','26.5'],
-        ['2019-07-05 15:00:00','9997','1762','29.0'],
-        ['2019-07-08 15:00:00','9997','1760','32.0']
-    ]
-    # Pandasデータフレームに変換（この状態でデータを保持しているとする）
-    df = pd.DataFrame(data)
-
-    # ここからはファイルを送信する処理
-    # 参考: https://qiita.com/5zm/items/760000cf63b176be544c
-
-    # いったんファイルを保存する
-    filename = 'mplgraph/SensorData.csv'
-    df.to_csv(filename)
-
-    CSV_MIMETYPE = 'text/csv'
-    downloadFileName = filename
-    downloadFile = filename
-    return send_file(downloadFile, as_attachment=True, \
-        attachment_filename=downloadFileName, mimetype=CSV_MIMETYPE)
-
-
-# /post にアクセスしたときの処理
-@app.route('/post', methods=['GET', 'POST'])
-def post():
-    global sensor
-
-    print('DEBUG: Sensor data was received.')
-
-    temp  = -999.0;
-    humid = -999.0;
-    hidx  = -999.0;
-
-    # POSTかGETでデータ受信を試みる
-    try:
-        if request.method == 'POST':
-            temp  = float(request.form['temp'])
-            humid = float(request.form['humid'])
-            hidx  = float(request.form['hidx'])
-        else:
-            temp  = float(request.args.get('temp', ''))
-            humid = float(request.args.get('humid', ''))
-            hidx  = float(request.args.get('hidx', ''))
-    except Exception as e:
-        print('DEBUG: DATA ERROR\n')
-        return str(e)
-
-    sensor = "Temperature:"+str(temp)+" Humidity:"+str(humid)+" HeatIndex:"+str(hidx)
-    print(sensor)
-    return redirect(url_for('mplgraph.index'))
-
-
 # グラフの例：引数の2乗和を計算する関数
 def func1(x, y):
     return x**2 + y**2
-
 
 @app.route("/plot/<func>")
 def plot_graph(func='sin'):
@@ -264,10 +198,8 @@ def plot_graph(func='sin'):
 
 @app.route("/")
 def index():
-    global sensor
     subdir = os.getenv('FLASK_SUBDIR', default='')
-    #print("To render:::::: "+sensor)
-    return render_template("mplgraph.html", img_data=None, sensor_readings=sensor, flask_subdir=subdir)
+    return render_template("mplgraph.html", img_data=None, flask_subdir=subdir)
 
 if __name__ == "__main__":
     app.run(debug=True)
