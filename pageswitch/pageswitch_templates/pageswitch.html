@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+ 
+<head>
+    <title>Flask Sample</title>
+</head>
+ 
+<body>
+    <h2>Flaskテスト</h2>
+ 
+    {% if page == "menu" %}
+    これはFlaskのテストです。</br>
+    <!--
+        このように書くとサブディレクトリで動作させたときに追随できないのでurl_for()を使う
+        <a href="/pageswitch/page1">Page1へ移動します。</a>
+    -->
+    <a href="{{url_for('.page1')}}">Page1へ移動します。</a>
+ 
+    {% elif page == "page1" %}
+    これはPage1です。</br>
+    <a href="{{url_for('.page2')}}">Page2へ移動します。</a>
+ 
+    {% elif page == "page2" %}
+    これはPage2です。</br>
+    <a href="{{url_for('.index')}}">最初のページへ戻ります。</a></br>
+    <a href="{{url_for('.page1')}}">Page1へ戻ります。</a>
+ 
+    {% else %}
+    ここはpageswitchアプリのテンプレートです。ここには来ないはずです。
+ 
+    {% endif %}
+ 
+</body>
+ 
+</html>

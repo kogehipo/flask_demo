@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Flask Sample</title>
+</head>
+    
+<body>
+    <h2>Flaskでファイル転送</h2>
+
+{% if page == "index" %}
+    <a href="{{url_for('.upload_filename')}}">
+        <img src="filetransfer_static/upload.png" valign="middle">
+        CSVファイルをアップロードします。
+    </a></br>
+    <a href="{{url_for('.download')}}">
+        <img src="filetransfer_static/download.png" valign="middle">
+        データをCSVファイルとしてダウンロードします。
+    </a></br>
+    </p>
+    現在サーバーにアップロードされているデータです。
+    <table border="1">
+        {% for line in table %}
+        <tr>
+            {% for cell in line %}
+                <td>{{ cell }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+{% elif page == "upload_filename" %}
+    ファイルを選択してアップロードしてください。<p/>
+    <form method="post" action="{{url_for('.upload')}}" enctype="multipart/form-data">
+        <input type="file" name="file"></br>
+        <button>アップロード</button>
+    </form>
+
+{% elif page == "message" %}
+    {{ message }}
+    </p>
+    <a href="{{url_for('filetransfer.index')}}">戻る</a><p/>
+
+{% endif %}
+
+</body>
+
+</html>

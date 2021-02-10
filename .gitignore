@@ -1,0 +1,9 @@
+env/
+addressbook/__pycache__/
+addressbook/ADDRESS_BOOK.db
+mplgraph/__pycache__/
+pageswitch/__pycache__/
+filetransfer/__pycache__/
+filetransfer/DATATABLE.csv
+sensordata/__pycache__/
+sensordata/SENSOR_DATA.db

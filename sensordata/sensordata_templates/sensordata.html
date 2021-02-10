@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    {% if page == "menu" %}
+        <!-- 1秒毎に画面をリロードする命令。必要に応じて使うこと。
+            <meta http-equiv="refresh" content="1; URL="> -->
+    {% endif %}
+    <title>Flask Sample</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    function drawGraph() {
+        // Pythonプログラムを呼んでグラフデータを取得し、plotimgに挿入する。
+        var plotdata = document.getElementById('plotimg');
+        $.get("{{flask_subdir}}/sensordata/plot", function(data) {
+            plotdata.src = "data:image/png:base64," + data;
+        });
+    };
+    $(document).ready(function() {
+        // ここはブラウザを立ち上げたときに毎回実行される。
+        drawGraph();
+    });
+    </script>
+</head>
+
+<body>
+    <h2>Flaskによるセンサ・データの受信テスト</h2>
+
+    {% if page == "menu" %}
+    <a href="{{url_for('sensordata.graph')}}"><button>グラフを表示する</button></a></br>
+    <table border="1">
+        <th>No.</th><th>時刻</th><th>温度</th><th>湿度</th>
+        {% for record in sensor_data %}
+        <tr>
+            <td>{{ record[0] }}</td><td>{{ record[1] }}</td><td>{{ record[2] }}</td><td>{{ record[3] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </p>
+    センサを実装していない場合はターミナルで次のようなコマンドを実行して</br>
+    このシステムに反映することを確認してみてください。</p>
+    $ curl "(サーバーのURL)/sensordata/post?temp=(温度)&humid=(湿度)"
+
+    {% elif page == "graph" %}
+    <img id=plotimg></img></br>
+    <a href="{{url_for('sensordata.index')}}"><button>戻る</button></a>
+
+    {% endif %}
+
+</body>
+
+</html>
